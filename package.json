@@ -1,0 +1,22 @@
+{
+  "name": "npm-man",
+  "version": "1.0.0",
+  "description": "Tool to view an npm package README.md in the command line.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imayobrown/npm-man.git"
+  },
+  "author": "@imayobrown",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/imayobrown/npm-man/issues"
+  },
+  "homepage": "https://github.com/imayobrown/npm-man#readme",
+  "devDependencies": {
+    "qunitjs": "^2.0.0"
+  }
+}
