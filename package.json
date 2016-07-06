@@ -4,7 +4,7 @@
   "description": "Tool to view an npm package README.md in the command line.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Placeholder for test script\""
+    "test": "echo \"Placeholder for test script\"",
     "test1": "echo \"This is test number 2\""
   },
   "repository": {
