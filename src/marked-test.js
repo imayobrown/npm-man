@@ -54,25 +54,25 @@ renderer.list = function(body, ordered) {
 };
 
 renderer.table = function(header, body){
-    console.log('header: ', header);
-    console.log('body: ', body);
+    //console.log('header: ', header);
+    //console.log('body: ', body);
 
     // Construct header array
     var slicedHeader = header.slice(9, -11); // Slice off end tags
     var headerArray = slicedHeader.split('</td><td>'); // Split sliced header
-    console.log('sliced header: ', slicedHeader);
-    console.log('header array: ', headerArray);
+    //console.log('sliced header: ', slicedHeader);
+    //console.log('header array: ', headerArray);
 
     // Instantiate table
     var table = new cliTable({
         head: headerArray,
-        chars: {'mid': '', 'left-mid': '', 'mid-mid': '', 'right-mid': ''}
+        //chars: {'mid': '', 'left-mid': '', 'mid-mid': '', 'right-mid': ''}
     });
 
     var slicedBody = body.slice(9, -11); // Slice off end tags
     var bodyArray = slicedBody.split('</td></tr>\n<tr>\n<td>'); // Split sliced body
-    console.log('sliced body: ', slicedBody);
-    console.log('body array: ', bodyArray);
+    //console.log('sliced body: ', slicedBody);
+    //console.log('body array: ', bodyArray);
 
     // Push each element of sliced body onto table
     bodyArray.forEach(function(currentValue, index, array) {
@@ -107,5 +107,6 @@ console.log(marked('**test strong**', {renderer: renderer}));
 console.log(marked('*test em*', {renderer: renderer}));
 console.log(marked('1. ordered\n2. list\n3. test', {renderer: renderer}));
 console.log(marked('* unordered\n* list\n* test', {renderer: renderer}));
-console.log('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |');
+//console.log('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |');
 marked('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |', {renderer: renderer});
+console.log( '•');
