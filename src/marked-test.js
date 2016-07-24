@@ -9,8 +9,13 @@ renderer.paragraph = function(text) {
 };
 
 renderer.heading = function(text, level) {
-    if (level === 1)
-        return "\033[41m" + text + "\033[0m";
+    var returnString, formatString;
+    if (level === 1) {
+        //formatString = "\033[41m" + text + "\033[0m";
+        formatString = "\033[41m" + "\033[1m" + text + "\033[0m" + "\033[0m";
+        returnString = '┌' + '-'.repeat(text.length) + '┐\n│' + formatString + '│\n└' + '-'.repeat(text.length) + '┘';
+        return returnString;
+    }
     if (level === 2)
         return "\033[42m" + text + "\033[0m";
     if (level === 3)
@@ -46,7 +51,7 @@ renderer.list = function(body, ordered) {
     // If unordered just place dots in front of them
     else {
         list = splitBody.map(function(currentValue, index, array) {
-            return '        - ' + currentValue;
+            return '        • ' + currentValue;
         });
         listString = list.join('\n');
     }
@@ -64,9 +69,10 @@ renderer.table = function(header, body){
     //console.log('header array: ', headerArray);
 
     // Instantiate table
+    var table = new cliTable();
     var table = new cliTable({
         head: headerArray,
-        //chars: {'mid': '', 'left-mid': '', 'mid-mid': '', 'right-mid': ''}
+        chars: {'mid': '|', 'left-mid': '', 'mid-mid': '', 'right-mid': ''}
     });
 
     var slicedBody = body.slice(9, -11); // Slice off end tags
@@ -80,6 +86,7 @@ renderer.table = function(header, body){
         table.push(pushArray);
     });
 
+    console.log(table.options);
     console.log(table.toString());
 };
 
@@ -109,4 +116,5 @@ console.log(marked('1. ordered\n2. list\n3. test', {renderer: renderer}));
 console.log(marked('* unordered\n* list\n* test', {renderer: renderer}));
 //console.log('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |');
 marked('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |', {renderer: renderer});
-console.log( '•');
+//console.log( '•');
+console.log( 8*'_');
