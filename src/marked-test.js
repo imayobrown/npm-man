@@ -1,6 +1,10 @@
-var cliTable = require('cli-table');
+var cliTable = require('cli-table2');
 var marked = require('marked');
 var renderer = new marked.Renderer();
+
+// Create format objects
+
+var formatBackground;
 
 // Overload marked functions to use bash related formatting rather than html
 
@@ -12,8 +16,8 @@ renderer.heading = function(text, level) {
     var returnString, formatString;
     if (level === 1) {
         //formatString = "\033[41m" + text + "\033[0m";
-        formatString = "\033[41m" + "\033[1m" + text + "\033[0m" + "\033[0m";
-        returnString = '┌' + '-'.repeat(text.length) + '┐\n│' + formatString + '│\n└' + '-'.repeat(text.length) + '┘';
+        formatString = "\033[41m" + "\033[1m" + text + "\033[0m" + "\033[0m"; // use both background color and bold
+        returnString = '┌' + '─'.repeat(text.length) + '┐\n│' + formatString + '│\n└' + '─'.repeat(text.length) + '┘';
         return returnString;
     }
     if (level === 2)
@@ -55,30 +59,25 @@ renderer.list = function(body, ordered) {
         });
         listString = list.join('\n');
     }
+
     return listString;
 };
 
+//cli-table doesn't work so great with solarized profile
 renderer.table = function(header, body){
-    //console.log('header: ', header);
-    //console.log('body: ', body);
 
     // Construct header array
     var slicedHeader = header.slice(9, -11); // Slice off end tags
     var headerArray = slicedHeader.split('</td><td>'); // Split sliced header
-    //console.log('sliced header: ', slicedHeader);
-    //console.log('header array: ', headerArray);
 
     // Instantiate table
     var table = new cliTable();
     var table = new cliTable({
         head: headerArray,
-        chars: {'mid': '|', 'left-mid': '', 'mid-mid': '', 'right-mid': ''}
     });
 
     var slicedBody = body.slice(9, -11); // Slice off end tags
     var bodyArray = slicedBody.split('</td></tr>\n<tr>\n<td>'); // Split sliced body
-    //console.log('sliced body: ', slicedBody);
-    //console.log('body array: ', bodyArray);
 
     // Push each element of sliced body onto table
     bodyArray.forEach(function(currentValue, index, array) {
@@ -86,23 +85,15 @@ renderer.table = function(header, body){
         table.push(pushArray);
     });
 
-    console.log(table.options);
-    console.log(table.toString());
+    return table.toString();
 };
-
-/*
-renderer.tablerow = function(content) {
-    var splitContent = content.split('splitter');
-
-    console.log('splitContent: ', splitContent);
-    console.log('end of tablerow function');
-    //return splitContent;
-    return content;
-};
-*/
 
 renderer.tablecell = function(content, flags) {
     return '<td>' + content + '</td>';
+};
+
+renderer.codespan = function(code) {
+    console.log(code);
 };
 
 
@@ -115,6 +106,6 @@ console.log(marked('*test em*', {renderer: renderer}));
 console.log(marked('1. ordered\n2. list\n3. test', {renderer: renderer}));
 console.log(marked('* unordered\n* list\n* test', {renderer: renderer}));
 //console.log('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |');
-marked('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |', {renderer: renderer});
+console.log(marked('| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |', {renderer: renderer}));
+marked('`codespan test`', {renderer: renderer});
 //console.log( '•');
-console.log( 8*'_');
