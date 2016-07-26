@@ -4,7 +4,23 @@ var renderer = new marked.Renderer();
 
 // Create format objects
 
-var formatBackground;
+var backgroundColor ={
+};
+
+var foregroundColor = {
+};
+
+var inlineFormat = {
+    strong: '1m',
+    em: '3m',
+    codespan: '100m'
+};
+
+function format(text, code) {
+    var encode = '\033[';
+    var encodeEnd = '0m';
+    return encode + code + text + encodeEnd;
+}
 
 // Overload marked functions to use bash related formatting rather than html
 
@@ -93,6 +109,7 @@ renderer.tablecell = function(content, flags) {
 };
 
 renderer.codespan = function(code) {
+
     console.log(code);
 };
 
