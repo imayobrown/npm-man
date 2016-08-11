@@ -1,6 +1,7 @@
 var cliTable = require('cli-table2');
 var marked = require('marked');
 var renderer = new marked.Renderer();
+var colors = require('colors/safe');
 
 // Create format objects
 
@@ -8,6 +9,23 @@ var backgroundColor ={
 };
 
 var foregroundColor = {
+    defaultBackground: '49m',
+    black: '40m',
+    red: '41m',
+    green: '42m',
+    yellow: '43m',
+    blue: '44m',
+    magenta: '45m',
+    cyan: '46m',
+    lightGray: '47m',
+    darkGray: '100m',
+    lightRed: '101m',
+    lightGreen: '102m',
+    lightYellow: '103m',
+    lightBlue: '104m',
+    lightMagenta: '105m',
+    lightCyan: '106m',
+    white: '107m'
 };
 
 var inlineFormat = {
@@ -18,7 +36,7 @@ var inlineFormat = {
 
 function format(text, code) {
     var encode = '\033[';
-    var encodeEnd = '0m';
+    var encodeEnd = '\033[0m';
     return encode + code + text + encodeEnd;
 }
 
@@ -45,11 +63,13 @@ renderer.heading = function(text, level) {
 };
 
 renderer.strong = function(text) {
-    return "\033[1m" + text + "\033[0m";
+    //return "\033[1m" + text + "\033[0m";
+    return colors.bold(text);
 };
 
 renderer.em = function(text) {
-    return "\033[3m" + text + "\033[0m";
+    //return "\033[3m" + text + "\033[0m";
+    return colors.italic(text);
 };
 
 renderer.listitem = function(text) {

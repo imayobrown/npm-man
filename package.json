@@ -4,7 +4,7 @@
   "description": "Tool to view an npm package README.md in the command line.",
   "main": "index.js",
   "scripts": {
-    "test": "node test/spec.js",
+    "test": "mocha test/",
     "test1": "echo \"This is test number 2\""
   },
   "repository": {
@@ -24,6 +24,7 @@
   "dependencies": {
     "cli-table": "^0.3.1",
     "cli-table2": "^0.2.0",
+    "colors": "^1.1.2",
     "marked": "^0.3.5"
   }
 }
