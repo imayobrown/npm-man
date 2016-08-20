@@ -1,5 +1,6 @@
 var marked = require('marked');
 var colors = require('colors/safe');
+var cliTable = require('cli-table2');
 
 function paragraph(text) {
     return text;
@@ -71,12 +72,71 @@ function heading(text, level) {
     return formattedText;
 };
 
+function listitem(text) {
+    return text + '\n';
+};
+
+function list(body, ordered) {
+    var splitBody = body.split('\n').slice(0, -1);
+    var list, listString;
+
+    // If elements ordered add corresponding numbers in front of them
+    if (ordered) {
+        list = splitBody.map(function(currentValue, index, array) {
+            return '        ' + (index + 1) + '. ' + currentValue;
+        });
+        listString = list.join('\n');
+    }
+    // If unordered just place dots in front of them
+    else {
+        list = splitBody.map(function(currentValue, index, array) {
+            return '        • ' + currentValue;
+        });
+        listString = list.join('\n');
+    }
+
+    return listString;
+};
+
+function tablecell(content, flags) {
+    return '<td>' + content + '</td>';
+};
+
+//cli-table doesn't work so great with solarized profile
+function table(header, body){
+
+    // Construct header array
+    var slicedHeader = header.slice(9, -11); // Slice off end tags
+    var headerArray = slicedHeader.split('</td><td>'); // Split sliced header
+
+    // Instantiate table
+    var table = new cliTable();
+    var table = new cliTable({
+        head: headerArray,
+    });
+
+    var slicedBody = body.slice(9, -11); // Slice off end tags
+    var bodyArray = slicedBody.split('</td></tr>\n<tr>\n<td>'); // Split sliced body
+
+    // Push each element of sliced body onto table
+    bodyArray.forEach(function(currentValue, index, array) {
+        var pushArray = currentValue.split('</td><td>');
+        table.push(pushArray);
+    });
+
+    return table.toString();
+};
+
 function cliMarked(src, opt, callback) {
     renderer = new marked.Renderer();
     renderer.paragraph = paragraph;
     renderer.strong = strong;
     renderer.em = em;
     renderer.heading = heading;
+    renderer.listitem = listitem;
+    renderer.list = list;
+    renderer.tablecell = tablecell;
+    renderer.table = table;
 
     return marked(src, {renderer: renderer});
 
